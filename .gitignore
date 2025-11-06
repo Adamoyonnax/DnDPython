@@ -1,0 +1,28 @@
+# Fichiers Python compilés
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environnement virtuel
+venv/
+env/
+.venv/
+.env/
+
+# Fichiers de sauvegarde du joueur
+joueur.json
+
+# Fichiers temporaires
+*.log
+*.tmp
+
+# IDE / éditeurs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Système
+.DS_Store
+Thumbs.db

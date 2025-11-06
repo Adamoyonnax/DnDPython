@@ -1,7 +1,6 @@
 class Entite:
 
     def __init__(self, nom, classe_armure, pv, stats):
-        self.id = Entite.compteur_id
         self.nom = nom
         self.classe_armure = classe_armure
         self.pv = pv
