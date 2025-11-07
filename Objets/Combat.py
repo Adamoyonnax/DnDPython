@@ -47,20 +47,24 @@ class Combat:
         print(f"C'est le tour de {self.joueur.nom}.")
         print("----------------------------------\n")
         print("1. Attaquer")
-        print("2. Utiliser une compétence")
-        print("3. Utiliser un objet")
-        print("4. Fuir le combat")
+        print("2. Utiliser une compétence (non implémentée)")
+        print("3. Utiliser un objet (non implémentée)")
+        print("4. Fuir le combat (non implémentée)")
 
         choix = input("Choisissez une action: ")
         match choix:
             case "1":
                 self.attaque_joueur()
+                return 1
             case "2":
                 print("Compétence utilisée ! (fonctionnalité à implémenter)")
+                return 2
             case "3":
                 print("Objet utilisé ! (fonctionnalité à implémenter)")
+                return 3
             case "4":
                 print(f"{self.joueur.nom} fuit le combat ! (fonctionnalité à implémenter)")
+                return 4
             case _:
                 print("Choix invalide, tour perdu.")
 
@@ -69,7 +73,10 @@ class Combat:
 
         for participant in tourGeneral:
             if participant[0] == self.joueur:
-                self.interface_combat()
+                res = self.interface_combat()
+                if res == 4:
+                    print("Le combat est terminé.")
+                    return
             else:
                 monstre = participant[0]
                 if monstre.pv > 0:
