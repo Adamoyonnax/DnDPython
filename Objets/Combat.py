@@ -1,6 +1,7 @@
 from .Joueur import Joueur
 from .Monstre import Monstre
-from .Enum.MonstreEnum import Taille, Alignement, Type
+from .Enum.MonstreEnum import Taille, Alignement, Type, Puissance
+from .Enum.MonstreEnum import XP_PUISSANCE
 from .Enum.JoueurEnum import Classe, Race
 
 from random import randint
@@ -82,11 +83,18 @@ class Combat:
                 if monstre.pv > 0:
                     print("----------------------------------")
                     print(f"C'est le tour de {participant[1]}.")
-                    self.attaque_monstre(monstre)
+                    res = self.attaque_monstre(monstre)
+                    if res == 1:
+                        print("Le combat est terminé, le joueur a été vaincu.")
+                        return
 
         if self.joueur.pv > 0 and len(self.monstres) > 0:
             self.tour += 1
             self.combat_tour()
+        else :
+            print("Le combat est terminé, tous les ennemis ont été vaincu !")
+            self.gagner_xp()
+
 
     def attaque_joueur(self):
         # Choisir une cible parmi les monstres
@@ -134,6 +142,7 @@ class Combat:
             print("Monstre cible non trouvé.")
 
     def attaque_monstre(self, monstre: Monstre):
+        
         print(f"{monstre.nom} attaque {self.joueur.nom} !")
         res = randint(1, 20) + monstre.modificateurs[0]
         print(f"Résultat de l'attaque: {res}")
@@ -148,8 +157,14 @@ class Combat:
             # Vérification si le joueur est vaincu
             if self.joueur.pv <= 0:
                 print(f"{self.joueur.nom} est vaincu !")
-                return
+                return 1
+            return 0
         else:
             print(f"Attaque ratée contre {self.joueur.nom}.")
             print("----------------------------------\n")
+            return 0
 
+    def gagner_xp(self):
+        total_xp = sum(XP_PUISSANCE[monstre.puissance] for monstre in self.monstres)
+        self.joueur.experience += total_xp
+        print(f"{self.joueur.nom} gagne {total_xp} points d'expérience ! Total XP: {self.joueur.experience}")

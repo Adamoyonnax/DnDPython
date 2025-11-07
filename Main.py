@@ -1,14 +1,14 @@
 from Objets.Monstre import Monstre
 from Objets.Joueur import Joueur
-from Objets.Enum.MonstreEnum import Taille, Alignement, Type
+from Objets.Enum.MonstreEnum import Taille, Alignement, Type, Puissance
 from Objets.Enum.JoueurEnum import Classe, Race
 from Objets.Combat import Combat
 from Sauvegarde.Sauvegarde import sauvegarder_joueur, charger_joueur
 
 def initialisation_data():
-    monstre1 = Monstre("Orc", Taille.M, 20, Alignement.CB, Type.HUMANOIDE, 5, 2, [14, 10, 12, 8, 10, 9])
-    monstre2 = Monstre("Gobelin", Taille.P, 20, Alignement.NM, Type.HUMANOIDE, 5, 2, [8, 14, 10, 10, 8, 8])
-    monstres = [monstre1, monstre2]
+    # monstre1 = Monstre("Orc", Taille.M, Puissance.UD, Alignement.CM, Type.HUMANOIDE, 13, 15, [16, 12, 16, 7, 11, 10])
+    monstre2 = Monstre("Gobelin", Taille.P, Puissance.UQ, Alignement.NM, Type.HUMANOIDE, 15, 7, [8, 14, 10, 10, 8, 8])
+    monstres = [monstre2]
     return monstres 
     
 def creation_joueur():

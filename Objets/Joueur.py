@@ -1,5 +1,6 @@
 from .Enum.JoueurEnum import Race
 from .Enum.JoueurEnum import Classe
+
 from .Entite import Entite
 
 XP_PALIERS = {
@@ -48,20 +49,5 @@ class Joueur(Entite):
         print(f"Classe d'Armure: {self.classe_armure}")
         self.afficher_stats()
 
-    def gagner_xp(self, xp: int):
-        self.experience += xp
-        print(f"🎉 {self.nom} a gagné {xp} points d'expérience ! Total actuel : {self.experience}")
-
-        nouveau_niveau = self.niveau
-        for niveau, xp_requis in XP_PALIERS.items():
-            if self.experience >= xp_requis:
-                nouveau_niveau = niveau
-
-        if nouveau_niveau > self.niveau:
-            diff_niveau = nouveau_niveau - self.niveau
-            self.niveau = nouveau_niveau
-            print(f"⬆️  {self.nom} a atteint le niveau {self.niveau} !")
-            # Exemple : augmenter PV à chaque niveau
-            self.pv += 5 * diff_niveau
 
 

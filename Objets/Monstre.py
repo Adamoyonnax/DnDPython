@@ -4,11 +4,11 @@ from .Enum.MonstreEnum import Taille, Alignement, Type
 class Monstre(Entite):
     compteur_id = 0
 
-    def __init__(self, nom, taille, xp, alignement, type, classe_armure, pv, stats):
+    def __init__(self, nom, taille, puissance, alignement, type, classe_armure, pv, stats):
         super().__init__(nom, classe_armure, pv, stats)
         Monstre.compteur_id += 1
         self.id = Monstre.compteur_id
-        self.xp = xp
+        self.puissance = puissance
         self.taille = taille
         self.alignement = alignement
         self.type = type
