@@ -1,6 +1,6 @@
-from Enum.JoueurEnum import Race
-from Enum.JoueurEnum import Classe
-from Entite import Entite
+from .Enum.JoueurEnum import Race
+from .Enum.JoueurEnum import Classe
+from .Entite import Entite
 
 XP_PALIERS = {
     1: 0,
@@ -28,7 +28,6 @@ XP_PALIERS = {
 class Joueur(Entite):
     compteur_id = 0
 
-
     def __init__(self, nom, classe_armure, classe, race, pv, stats):
         super().__init__(nom, classe_armure, pv, stats)
         Joueur.compteur_id += 1
@@ -37,6 +36,7 @@ class Joueur(Entite):
         self.niveau = 1
         self.classe = classe
         self.race = race
+        self.degat= 10
 
     def afficher_joueur(self):
         print(f"👤 Joueur: {self.nom} (ID: {self.id})")

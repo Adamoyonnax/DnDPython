@@ -1,3 +1,5 @@
+from random import randint
+
 class Entite:
 
     def __init__(self, nom, classe_armure, pv, stats):

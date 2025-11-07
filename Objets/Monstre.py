@@ -1,5 +1,5 @@
-from Entite import Entite
-from Enum.MonstreEnum import Taille, Alignement, Type
+from .Entite import Entite
+from .Enum.MonstreEnum import Taille, Alignement, Type
 
 class Monstre(Entite):
     compteur_id = 0
