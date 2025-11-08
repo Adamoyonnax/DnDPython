@@ -14,8 +14,4 @@ class Classe(Enum):
 class Race(Enum):
     HUMAIN = "Humain"
     ELF = "Elfe"
-    NAIN = "Nain"
-    ORC = "Orc"
-    GNOME = "Gnome"
-    TIEFLING = "Tiefling"
-    DRAGONBORN = "Dragonborn"   
+    NAIN = "Nain"  

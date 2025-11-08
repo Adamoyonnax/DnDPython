@@ -38,6 +38,23 @@ class Joueur(Entite):
         self.classe = classe
         self.race = race
         self.degat= 10
+        self.appliquer_bonus_race()
+
+    def appliquer_bonus_race(self):
+        # stats = [FOR, DEX, CON, INT, SAG, CHA]
+        if self.race == Race.ELF:
+            self.stats[1] += 2  # +2 DEX
+            self.stats[4] += 1  # +1 SAG
+        elif self.race == Race.NAIN:
+            self.stats[2] += 2  # +2 CON
+            self.stats[0] += 1  # +1 FOR
+        elif self.race == Race.HUMAIN:
+            self.stats = [stat + 1 for stat in self.stats]
+        # Ajouter d'autres races selon ton Enum Race
+
+        # Optionnel : recalculer PV et classe d'armure après les bonus
+        self.classe_armure = 10 + (self.stats[1] - 10) // 2
+        self.pv = self.stats[2] * 2
 
     def afficher_joueur(self):
         print(f"👤 Joueur: {self.nom} (ID: {self.idJ})")
