@@ -1,12 +1,12 @@
-from Objets.Monstre import Monstre
-from Objets.Joueur import Joueur
-from Objets.Enum.MonstreEnum import Taille, Alignement, Type, Puissance
-from Objets.Enum.JoueurEnum import Classe, Race
-from Objets.Combat import Combat
+from Classes.Monstre import Monstre
+from Classes.Joueur import Joueur
+from Classes.Enum.MonstreEnum import Taille, Alignement, Type, Puissance
+from Classes.Enum.JoueurEnum import Classe, Race
+from Classes.Combat import Combat
 from Sauvegarde.Sauvegarde import sauvegarder_joueur, charger_joueur
 
 def initialisation_data():
-    # monstre1 = Monstre("Orc", Taille.M, Puissance.UD, Alignement.CM, Type.HUMANOIDE, 13, 15, [16, 12, 16, 7, 11, 10])
+    monstre1 = Monstre("Orc", Taille.M, Puissance.UD, Alignement.CM, Type.HUMANOIDE, 13, 15, [16, 12, 16, 7, 11, 10])
     monstre2 = Monstre("Gobelin", Taille.P, Puissance.UQ, Alignement.NM, Type.HUMANOIDE, 15, 7, [8, 14, 10, 10, 8, 8])
     monstres = [monstre2]
     return monstres 
@@ -18,7 +18,6 @@ def creation_joueur():
         choix = input("Un joueur sauvegardé a été trouvé. Voulez-vous le charger ? (O/N) : ").lower()
         if choix == "o":
             print("\n✅ Joueur chargé avec succès :")
-            joueur_existant.afficher_joueur()
             return joueur_existant
         else:
             print("⚠️ Création d’un nouveau joueur. L’ancienne sauvegarde sera remplacée.\n")
@@ -89,9 +88,8 @@ def menu_principal(joueur):
         print("\n=== 🏰 MENU PRINCIPAL ===")
         print("1️⃣  Afficher les informations du joueur")
         print("2️⃣  Combattre un monstre")
-        print("3️⃣  Gagner de l'expérience (test)")
-        print("4️⃣  Sauvegarder le joueur")
-        print("5️⃣  Quitter le jeu")
+        print("3️⃣  Sauvegarder le joueur")
+        print("4️⃣  Quitter le jeu")
 
         choix = input("\n👉 Que souhaitez-vous faire ? ")
 
@@ -106,12 +104,9 @@ def menu_principal(joueur):
                 combat1.combat_tour()
 
             case "3":
-                joueur.gagner_xp(10000)
-
-            case "4":
                 sauvegarder_joueur(joueur)
 
-            case "5":
+            case "4":
                 sauvegarder_joueur(joueur)
                 print("👋 À bientôt, aventurier !")
                 break

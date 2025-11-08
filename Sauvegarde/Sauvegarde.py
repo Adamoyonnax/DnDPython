@@ -2,8 +2,8 @@
 import json
 import os
 
-from Objets.Joueur import Joueur
-from Objets.Enum.JoueurEnum import Classe, Race
+from Classes.Joueur import Joueur
+from Classes.Enum.JoueurEnum import Classe, Race
 
 def sauvegarder_joueur(joueur, fichier="Sauvegarde/joueur.json"):
     """Sauvegarde le joueur dans un fichier JSON."""

@@ -13,6 +13,7 @@ class Combat:
         self.joueur = joueur #Un joueur  
         self.monstres = monstres #Liste de monstres
         self.tourGeneral = []
+        self.morts = []
         self.tour = 1
 
     def afficher_combat(self):
@@ -30,7 +31,7 @@ class Combat:
         print(f"\n--- Tour {self.tour} ---")
         for monstre in self.monstres:
             init = randint(1, 20) + monstre.modificateurs[1] #mod DEX
-            nom = monstre.nom + str(monstre.id)
+            nom = monstre.nom + str(monstre.idM)
             self.tourGeneral.append([monstre, nom, init])
         
         init = randint(1, 20) + self.joueur.modificateurs[1] #mod DEX
@@ -101,9 +102,11 @@ class Combat:
         print(f"Quel monstre voulez-vous attaquer ?")
         for participant in self.tourGeneral:
             if participant[0] != self.joueur:
-                print(f"- {participant[1]} (ID: {participant[0].id})")
+                print(f"- {participant[1]} (ID: {participant[0].idM})")
         cible_id = int(input("Entrez l'ID du monstre cible: "))
-        cible = next((participant[0] for participant in self.tourGeneral if participant[0].id == cible_id), None)
+
+        monstres_vivants = [p[0] for p in self.tourGeneral if not isinstance(p[0], type(self.joueur))]
+        cible = next((m for m in monstres_vivants if m.idM == cible_id), None)
 
         # Cible trouvée
         if cible:
@@ -123,7 +126,7 @@ class Combat:
                 # Vérification si le monstre est vaincu
                 if cible.pv <= 0:
                     print(f"{cible.nom} est vaincu !")
-                                # Retirer de la liste d’initiative
+                    # Retirer de la liste d’initiative
                     self.tourGeneral = [
                         participant for participant in self.tourGeneral
                         if participant[0] != cible
@@ -134,6 +137,8 @@ class Combat:
                         monstre for monstre in self.monstres
                         if monstre != cible
                     ]
+
+                    self.morts.append(cible)
 
             else:             
                 print(f"Attaque ratée contre {cible.nom}.")
@@ -165,6 +170,6 @@ class Combat:
             return 0
 
     def gagner_xp(self):
-        total_xp = sum(XP_PUISSANCE[monstre.puissance] for monstre in self.monstres)
+        total_xp = sum(XP_PUISSANCE[monstre.puissance] for monstre in self.morts)
         self.joueur.experience += total_xp
         print(f"{self.joueur.nom} gagne {total_xp} points d'expérience ! Total XP: {self.joueur.experience}")

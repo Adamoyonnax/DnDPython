@@ -27,20 +27,20 @@ XP_PALIERS = {
 }
 
 class Joueur(Entite):
-    compteur_id = 0
+    compteur_idJ = 0
 
     def __init__(self, nom, classe_armure, classe, race, pv, stats):
         super().__init__(nom, classe_armure, pv, stats)
-        Joueur.compteur_id += 1
+        Joueur.compteur_idJ += 1
         self.experience = 0
-        self.id = Joueur.compteur_id
+        self.idJ = Joueur.compteur_idJ
         self.niveau = 1
         self.classe = classe
         self.race = race
         self.degat= 10
 
     def afficher_joueur(self):
-        print(f"👤 Joueur: {self.nom} (ID: {self.id})")
+        print(f"👤 Joueur: {self.nom} (ID: {self.idJ})")
         print(f"Niveau: {self.niveau}")
         print(f"Expérience: {self.experience}")
         print(f"Classe: {self.classe.value}")
