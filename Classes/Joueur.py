@@ -37,9 +37,7 @@ class Joueur(Entite):
         self.niveau = 1
         self.classe = classe
         self.race = race
-        self.degat= 10
-        self.appliquer_bonus_classe()
-        
+        self.degat= 10        
 
     def appliquer_bonus_race(self):
         # stats = [FOR, DEX, CON, INT, SAG, CHA]
