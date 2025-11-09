@@ -1,8 +1,8 @@
-from .Joueur import Joueur
-from .Monstre import Monstre
-from .Enum.MonstreEnum import Taille, Alignement, Type, Puissance
-from .Enum.MonstreEnum import XP_PUISSANCE
-from .Enum.JoueurEnum import Classe, Race
+from Classes.Joueur import Joueur
+from Classes.Monstre import Monstre
+from Classes.Enum.MonstreEnum import Taille, Alignement, Type, Puissance
+from Classes.Enum.MonstreEnum import XP_PUISSANCE
+from Classes.Enum.JoueurEnum import Classe, Race
 
 from random import randint
 
@@ -53,22 +53,23 @@ class Combat:
         print("3. Utiliser un objet (non implémentée)")
         print("4. Fuir le combat (non implémentée)")
 
-        choix = input("Choisissez une action: ")
-        match choix:
-            case "1":
-                self.attaque_joueur()
-                return 1
-            case "2":
-                print("Compétence utilisée ! (fonctionnalité à implémenter)")
-                return 2
-            case "3":
-                print("Objet utilisé ! (fonctionnalité à implémenter)")
-                return 3
-            case "4":
-                print(f"{self.joueur.nom} fuit le combat ! (fonctionnalité à implémenter)")
-                return 4
-            case _:
-                print("Choix invalide, tour perdu.")
+        while True:
+            choix = input("Choisissez une action: ")
+            match choix:
+                case "1":
+                    self.attaque_joueur()
+                    return 1
+                case "2":
+                    print("Compétence utilisée ! (fonctionnalité à implémenter)")
+                    return 2
+                case "3":
+                    print("Objet utilisé ! (fonctionnalité à implémenter)")
+                    return 3
+                case "4":
+                    print(f"{self.joueur.nom} fuit le combat !")
+                    return 4
+                case _:
+                    print("Choix invalide.")
 
     def combat_tour(self):
         tourGeneral = self.initiative_tourGeneral()
