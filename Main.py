@@ -3,13 +3,7 @@ from Classes.Joueur import Joueur
 from Classes.Enum.MonstreEnum import Taille, Alignement, Type, Puissance
 from Classes.Enum.JoueurEnum import Classe, Race
 from Classes.Combat import Combat
-from Sauvegarde.Sauvegarde import sauvegarder_joueur, charger_joueur
-
-def initialisation_data():
-    monstre1 = Monstre("Orc", Taille.M, Puissance.UD, Alignement.CM, Type.HUMANOIDE, 13, 15, [16, 12, 16, 7, 11, 10])
-    monstre2 = Monstre("Gobelin", Taille.P, Puissance.UQ, Alignement.NM, Type.HUMANOIDE, 15, 7, [8, 14, 10, 10, 8, 8])
-    monstres = [monstre2]
-    return monstres 
+from Sauvegarde.Sauvegarde import sauvegarder_joueur, charger_joueur, sauvegarder_monstres, charger_monstres
     
 def creation_joueur():
     """Crée un nouveau joueur ou charge une sauvegarde existante, avec gestion d'erreurs."""
@@ -81,13 +75,15 @@ def creation_joueur():
                     print("❌ Nombre invalide. Réessayez.")
                 except ValueError:
                     print("⚠️ Veuillez entrer un nombre entier.")
-
+        
         # 🔹 Calcul des valeurs dérivées
         classe_armure = 10 + (stats[1] - 10) // 2  # mod DEX
         pv = stats[2] * 2  # PV de départ basé sur CON
 
         # 🔹 Création du joueur
         joueur = Joueur(nom, classe_armure, classe, race, pv, stats)
+        joueur.appliquer_bonus_race()
+        joueur.appliquer_bonus_classe()
 
         print(f"\n✅ Création terminée !")
 
@@ -123,7 +119,7 @@ def menu_principal(joueur):
                 joueur.afficher_joueur()
 
             case "2":
-                monstres = initialisation_data()
+                monstres = charger_monstres()
                 combat1 = Combat(joueur, monstres)
                 combat1.combat_tour()
 

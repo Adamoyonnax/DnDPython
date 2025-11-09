@@ -96,7 +96,6 @@ class Combat:
             print("Le combat est terminé, tous les ennemis ont été vaincu !")
             self.gagner_xp()
 
-
     def attaque_joueur(self):
         # Choisir une cible parmi les monstres
         print(f"Quel monstre voulez-vous attaquer ?")
@@ -173,3 +172,5 @@ class Combat:
         total_xp = sum(XP_PUISSANCE[monstre.puissance] for monstre in self.morts)
         self.joueur.experience += total_xp
         print(f"{self.joueur.nom} gagne {total_xp} points d'expérience ! Total XP: {self.joueur.experience}")
+        self.joueur.level_up()
+    

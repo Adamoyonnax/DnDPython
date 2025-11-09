@@ -38,7 +38,6 @@ class Joueur(Entite):
         self.classe = classe
         self.race = race
         self.degat= 10
-        self.appliquer_bonus_race()
         self.appliquer_bonus_classe()
         
 
@@ -85,5 +84,12 @@ class Joueur(Entite):
         print(f"Classe d'Armure: {self.classe_armure}")
         self.afficher_stats()
 
-
+    def level_up(self):
+        for niveau, palier in sorted(XP_PALIERS.items()) :
+            if self.experience < palier:
+                return
+                        
+            if niveau > self.niveau:
+                print(f"✨ Level up ! Vous êtes passé niveau {niveau} !")
+                self.niveau = niveau
 

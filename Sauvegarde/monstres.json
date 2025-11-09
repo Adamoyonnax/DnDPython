@@ -1,0 +1,92 @@
+[
+    {
+        "idM": 1,
+        "nom": "Orc",
+        "taille": "M",
+        "puissance": "UD",
+        "alignement": "CM",
+        "type": "HUMANOIDE",
+        "classe_armure": 13,
+        "pv": 15,
+        "stats": [
+            16,
+            12,
+            16,
+            7,
+            11,
+            10
+        ]
+    },
+    {
+        "idM": 2,
+        "nom": "Gobelin",
+        "taille": "P",
+        "puissance": "UQ",
+        "alignement": "NM",
+        "type": "HUMANOIDE",
+        "classe_armure": 15,
+        "pv": 7,
+        "stats": [
+            8,
+            14,
+            10,
+            10,
+            8,
+            8
+        ]
+    },
+    {
+        "idM": 3,
+        "nom": "Troll",
+        "taille": "G",
+        "puissance": "DEUX",
+        "alignement": "CM",
+        "type": "G\u00c9ANT",
+        "classe_armure": 15,
+        "pv": 30,
+        "stats": [
+            18,
+            13,
+            20,
+            7,
+            9,
+            7
+        ]
+    },
+    {
+        "idM": 4,
+        "nom": "Dragon Rouge",
+        "taille": "G",
+        "puissance": "ONZE",
+        "alignement": "LM",
+        "type": "DRAGON",
+        "classe_armure": 19,
+        "pv": 200,
+        "stats": [
+            27,
+            10,
+            25,
+            16,
+            13,
+            21
+        ]
+    },
+    {
+        "idM": 5,
+        "nom": "F\u00e9e Sylvestre",
+        "taille": "TP",
+        "puissance": "UH",
+        "alignement": "NB",
+        "type": "F\u00c9E",
+        "classe_armure": 12,
+        "pv": 5,
+        "stats": [
+            6,
+            18,
+            12,
+            15,
+            14,
+            10
+        ]
+    }
+]
