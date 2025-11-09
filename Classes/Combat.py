@@ -6,7 +6,6 @@ from Classes.Enum.JoueurEnum import Classe, Race
 
 from random import randint
 
-
 class Combat:
 
     def __init__(self, joueur, monstres):

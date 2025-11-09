@@ -56,6 +56,23 @@ class Joueur(Entite):
         self.classe_armure = 10 + (self.stats[1] - 10) // 2
         self.pv = self.stats[2] * 2
 
+    def appliquer_bonus_classe(self):
+        # stats = [FOR, DEX, CON, INT, SAG, CHA]
+        if self.classe == Classe.GUERRIER:
+            self.stats[0] += 2  # +2 FOR
+            self.stats[2] += 1  # +1 CON
+        elif self.classe == Classe.ROUBLARD:
+            self.stats[1] += 2  # +2 DEX
+            self.stats[0] += 1  # +1 FOR
+        elif self.classe == Classe.MAGE:
+            self.stats[3] += 2  # +2 INT
+            self.stats[4] += 1  # +1 SAG
+        # Ajouter d'autres classes selon ton Enum Classe
+
+        # Optionnel : recalculer PV et classe d'armure après les bonus
+        self.classe_armure = 10 + (self.stats[1] - 10) // 2
+        self.pv = self.stats[2] * 2
+
     def afficher_joueur(self):
         print(f"👤 Joueur: {self.nom} (ID: {self.idJ})")
         print(f"Niveau: {self.niveau}")

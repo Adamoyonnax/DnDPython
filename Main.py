@@ -107,7 +107,6 @@ def creation_joueur():
         print(f"❌ Erreur inattendue : {e}")
         return None
 
-
 def menu_principal(joueur):
     while True:
         print("\n=== 🏰 MENU PRINCIPAL ===")
@@ -138,7 +137,6 @@ def menu_principal(joueur):
 
             case _:
                 print("❌ Choix invalide. Réessayez.")
-
 
 def main():
     joueur = creation_joueur()
