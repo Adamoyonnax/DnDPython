@@ -9,15 +9,11 @@ class TypeArmure(Enum):
 
 class Armure(Objet):
 
-    compteur_idArmure = 0
-
     def __init__(self, nom, typearmure, prix, rarete, protection, force_min, propriete=None):
         super().__init__(nom=nom, prix=prix, type="Armure", rarete=rarete, propriete=propriete)
         self.protection = protection
         self.force_min = force_min
         self.typearmure= typearmure
-        Armure.compteur_idArmure += 1
-        self.idArmure = Armure.compteur_idArmure
     
     @property
     def idArmure(self):
@@ -65,15 +61,3 @@ class Armure(Objet):
         if self.propriete:
             print(f"Propriétés spéciales : {self.propriete}")
         print("-" * 30)
-
-cotte_mailles = Armure(
-    nom="Cotte de mailles",
-    typearmure=TypeArmure.INTERMEDIAIRE,
-    prix=75,
-    rarete="Peu commune",
-    protection=15,
-    force_min=13,
-    propriete="Lourde, bruit métallique"
-)
-
-cotte_mailles.afficher_armure()

@@ -1,5 +1,8 @@
 from ..Enum.JoueurEnum import Race
 from ..Enum.JoueurEnum import Classe
+from Classes.HeritageObjets.Arme import Arme
+from Classes.HeritageObjets.Armure import Armure
+from Classes.HeritageObjets.Consommable import Consommable
 
 from ..Entite import Entite
 
@@ -38,6 +41,7 @@ class Joueur(Entite):
         self.classe = classe
         self.race = race
         self.degat= 10
+        self.inventaire = None
 
     # --- Getters / Setters ---
     @property
@@ -95,6 +99,14 @@ class Joueur(Entite):
         if value < 0:
             raise ValueError("Les dégâts ne peuvent pas être négatifs.")
         self._degat = value
+
+    @property
+    def inventaire(self):
+        return self._inventaire
+
+    @inventaire.setter
+    def inventaire(self, value):
+        self._inventaire = value   
 
     def appliquer_bonus_race(self):
         # stats = [FOR, DEX, CON, INT, SAG, CHA]

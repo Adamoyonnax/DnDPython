@@ -1,0 +1,30 @@
+[
+    {
+        "idO": 1,
+        "nom": "Potion de Soin Mineure",
+        "prix": 50,
+        "type": "Consommable",
+        "rarete": "Commun",
+        "propriete": "Restaure 10 PV lorsqu'elle est utilis\u00e9e."
+    },
+    {
+        "idO": 2,
+        "nom": "Cotte de mailles",
+        "prix": 75,
+        "type": "Armure",
+        "rarete": "Peu commune",
+        "propriete": "Lourde, bruit m\u00e9tallique",
+        "protection": 15,
+        "typearmure": "INTERMEDIAIRE",
+        "force_min": 13
+    },
+    {
+        "idO": 3,
+        "nom": "B\u00e2ton",
+        "prix": 2,
+        "type": "Arme",
+        "rarete": "Commune",
+        "propriete": "Polyvalente (1d8)",
+        "degat": 6
+    }
+]

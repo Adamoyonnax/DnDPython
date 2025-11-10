@@ -2,12 +2,27 @@ from Classes.HeritageEntite.Monstre import Monstre
 from Classes.HeritageEntite.Joueur import Joueur
 from Classes.Enum.MonstreEnum import Taille, Alignement, Type, Puissance
 from Classes.Enum.JoueurEnum import Classe, Race
+
 from Classes.Combat import Combat
-from Sauvegarde.Sauvegarde import sauvegarder_joueur, charger_joueur, sauvegarder_monstres, charger_monstres
-    
+
+from Sauvegarde.Sauvegarde import sauvegarder_joueur, charger_joueur, charger_monstres, charger_objet, charger_objets
+
+from Classes.HeritageObjets.Arme import Arme
+from Classes.HeritageObjets.Armure import Armure
+from Classes.HeritageObjets.Consommable import Consommable
+
+from Classes.Inventaire import Inventaire
+
+def signature() :
+    print("─────────────────────────────────────────────")
+    print("Nom du projet : Donjon&Dragon Simulator") 
+    print("Auteur : Ademo/Adamoyonnax")
+    print("Débuté le : 6/11/2025")
+    print("Discord : ademo")
+    print("─────────────────────────────────────────────")
+
 def creation_joueur():
     """Crée un nouveau joueur ou charge une sauvegarde existante, avec gestion d'erreurs."""
-
     try:
         # 🔹 Chargement d'une éventuelle sauvegarde
         joueur_existant = charger_joueur()
@@ -84,6 +99,12 @@ def creation_joueur():
         joueur = Joueur(nom, classe_armure, classe, race, pv, stats)
         joueur.appliquer_bonus_race()
         joueur.appliquer_bonus_classe()
+        objet_depart=[]
+        objet_depart.append([charger_objet("Bâton"), 1])
+        objet_depart.append([charger_objet("Potion de Soin Mineure"), 3])
+        objet_depart.append([charger_objet("Cotte de mailles"), 1])
+        inventaire = Inventaire(objet_depart)
+        joueur.inventaire = inventaire
 
         print(f"\n✅ Création terminée !")
 
@@ -98,18 +119,15 @@ def creation_joueur():
     except KeyboardInterrupt:
         print("\n🚫 Création annulée par l'utilisateur.")
         return None
-
-    '''except Exception as e:
-        print(f"❌ Erreur inattendue : {e}")
-        return None'''
-
+    
 def menu_principal(joueur):
     while True:
         print("\n=== 🏰 MENU PRINCIPAL ===")
         print("1️⃣  Afficher les informations du joueur")
-        print("2️⃣  Combattre un monstre")
-        print("3️⃣  Sauvegarder le joueur")
-        print("4️⃣  Quitter le jeu")
+        print("2️⃣  Voir l'inventaire")
+        print("3️⃣  Combattre un monstre")
+        print("4️⃣  Sauvegarder le joueur")
+        print("5️⃣  Quitter le jeu")
 
         choix = input("\n👉 Que souhaitez-vous faire ? ")
 
@@ -119,14 +137,19 @@ def menu_principal(joueur):
                 joueur.afficher_joueur()
 
             case "2":
+                print(f"Inventaire de {joueur.nom}")
+                joueur.inventaire.afficher_inventaire()
+                interface_inventaire(joueur)
+
+            case "3":
                 monstres = charger_monstres()
                 combat1 = Combat(joueur, monstres)
                 combat1.combat_tour()
 
-            case "3":
+            case "4":
                 sauvegarder_joueur(joueur)
 
-            case "4":
+            case "5":
                 sauvegarder_joueur(joueur)
                 print("👋 À bientôt, aventurier !")
                 break
@@ -134,8 +157,41 @@ def menu_principal(joueur):
             case _:
                 print("❌ Choix invalide. Réessayez.")
 
+def interface_inventaire(joueur) :
+    while True:
+                print("\n=== 🏰 INVENTAIRE ===")
+                print("1️⃣  Jeter un objet")
+                print("2️⃣  Détail d'un objet")
+                print("3️⃣  Retourner au menu principal")
+
+                choix = input("\n👉 Que souhaitez-vous faire ? ")
+
+                match choix:
+                    case "1":
+                        id = int(input("\n👉 Donner l'ID de l'item que vous souhaitez jeter"))
+                        quantite = int(input("👉 Combien ? "))
+                        joueur.inventaire.retirer_objet(id, quantite)
+                        print("✅ Objet(s) retiré(s) de l'inventaire.")
+
+                    case "2":
+                        objet_id = int(input("\n👉 Donner l'ID de l'item dont vous voulez connaître les détails"))
+                        for objet in joueur.inventaire.inventaire :
+                            if objet[0].idO == objet_id :
+                                type = objet[0].type 
+                                match type :
+                                    case "Arme" :
+                                        objet[0].afficher_arme()
+                                    case "Armure" :
+                                        objet[0].afficher_armure()
+                                    case "Consommable" :
+                                        objet[0].afficher_consommable()
+
+                    case "3":
+                        menu_principal(joueur)
+
 def main():
     joueur = creation_joueur()
+    signature()
     menu_principal(joueur)
 
 main()

@@ -1,7 +1,11 @@
 
 class Objet:
 
+    compteur_idO = 0
+
     def __init__(self, nom, prix, type, rarete, propriete=None):
+        Objet.compteur_idO += 1
+        self.idO = Objet.compteur_idO 
         self.nom = nom
         self.prix = prix
         self.type = type
