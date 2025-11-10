@@ -9,7 +9,49 @@ class Entite:
         self.stats = stats
         self.modificateurs = [self.calcul_mod(stat) for stat in stats]
 
-    def calcul_mod(self, stat: int):
+        # --- Getters / Setters ---
+    @property
+    def nom(self):
+        return self._nom
+
+    @nom.setter
+    def nom(self, value):
+        self._nom = value
+
+    @property
+    def classe_armure(self):
+        return self._classe_armure
+
+    @classe_armure.setter
+    def classe_armure(self, value):
+        self._classe_armure = value
+
+    @property
+    def pv(self):
+        return self._pv
+
+    @pv.setter
+    def pv(self, value):          
+        self._pv = value
+
+    @property
+    def stats(self):
+        return self._stats
+
+    @stats.setter
+    def stats(self, value):
+        self._stats = value
+        self._modificateurs = [self.calcul_mod(stat) for stat in value]
+
+    @property
+    def modificateurs(self):
+        return self._modificateurs
+
+    @modificateurs.setter
+    def modificateurs(self, new_stats):
+        self._modificateurs = new_stats
+
+    def calcul_mod(self, stat):
         return (stat - 10) // 2
 
     def afficher_stats(self):

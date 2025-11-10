@@ -2,9 +2,9 @@
 import json
 import os
 
-from Classes.Joueur import Joueur
+from Classes.HeritageEntite.Joueur import Joueur
 from Classes.Enum.JoueurEnum import Classe, Race
-from Classes.Monstre import Monstre
+from Classes.HeritageEntite.Monstre import Monstre
 from Classes.Enum.MonstreEnum import Taille, Alignement, Type, Puissance
 
 def sauvegarder_joueur(joueur, fichier="Sauvegarde/joueur.json"):

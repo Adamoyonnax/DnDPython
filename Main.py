@@ -1,5 +1,5 @@
-from Classes.Monstre import Monstre
-from Classes.Joueur import Joueur
+from Classes.HeritageEntite.Monstre import Monstre
+from Classes.HeritageEntite.Joueur import Joueur
 from Classes.Enum.MonstreEnum import Taille, Alignement, Type, Puissance
 from Classes.Enum.JoueurEnum import Classe, Race
 from Classes.Combat import Combat
@@ -99,9 +99,9 @@ def creation_joueur():
         print("\n🚫 Création annulée par l'utilisateur.")
         return None
 
-    except Exception as e:
+    '''except Exception as e:
         print(f"❌ Erreur inattendue : {e}")
-        return None
+        return None'''
 
 def menu_principal(joueur):
     while True:

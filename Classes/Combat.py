@@ -1,5 +1,5 @@
-from Classes.Joueur import Joueur
-from Classes.Monstre import Monstre
+from Classes.HeritageEntite.Joueur import Joueur
+from Classes.HeritageEntite.Monstre import Monstre
 from Classes.Enum.MonstreEnum import Taille, Alignement, Type, Puissance
 from Classes.Enum.MonstreEnum import XP_PUISSANCE
 from Classes.Enum.JoueurEnum import Classe, Race
@@ -14,6 +14,49 @@ class Combat:
         self.tourGeneral = []
         self.morts = []
         self.tour = 1
+
+    # --- Getters / Setters ---
+    @property
+    def joueur(self):
+        return self._joueur
+
+    @joueur.setter
+    def joueur(self, value):
+        self._joueur = value
+
+    @property
+    def monstres(self):
+        return self._monstres
+
+    @monstres.setter
+    def monstres(self, value):
+        self._monstres = value
+
+    @property
+    def tourGeneral(self):
+        return self._tourGeneral
+
+    @tourGeneral.setter
+    def tourGeneral(self, value):
+        self._tourGeneral = value
+    
+    @property
+    def morts(self):
+        return self._morts
+
+    @morts.setter
+    def morts(self, value):
+        self._morts = value
+    
+    @property
+    def tour(self):
+        return self._tour
+
+    @tour.setter
+    def tour(self, value):
+        if value < 1:
+            raise ValueError("Le numéro du tour doit être supérieur ou égal à 1.")
+        self._tour = value
 
     def afficher_combat(self):
         print("=== Combat ===")
@@ -50,7 +93,7 @@ class Combat:
         print("1. Attaquer")
         print("2. Utiliser une compétence (non implémentée)")
         print("3. Utiliser un objet (non implémentée)")
-        print("4. Fuir le combat (non implémentée)")
+        print("4. Fuir le combat")
 
         while True:
             choix = input("Choisissez une action: ")

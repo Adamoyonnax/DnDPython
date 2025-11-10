@@ -1,7 +1,7 @@
-from .Enum.JoueurEnum import Race
-from .Enum.JoueurEnum import Classe
+from ..Enum.JoueurEnum import Race
+from ..Enum.JoueurEnum import Classe
 
-from .Entite import Entite
+from ..Entite import Entite
 
 XP_PALIERS = {
     1: 0,
@@ -38,6 +38,63 @@ class Joueur(Entite):
         self.classe = classe
         self.race = race
         self.degat= 10
+
+    # --- Getters / Setters ---
+    @property
+    def idJ(self):
+        return self._idJ
+
+    @idJ.setter
+    def idJ(self, value):
+        if value < 1:
+            raise ValueError("L'ID doit être au moins 1")
+        self._idJ = value
+    
+    @property
+    def experience(self):
+        return self._experience
+
+    @experience.setter
+    def experience(self, value):
+        if value < 0:
+            raise ValueError("L'expérience ne peut pas être négative.")
+        self._experience = value
+
+    @property
+    def niveau(self):
+        return self._niveau
+
+    @niveau.setter
+    def niveau(self, value):
+        if value < 1:
+            raise ValueError("Le niveau doit être au minimum 1.")
+        self._niveau = value
+
+    @property
+    def classe(self):
+        return self._classe
+
+    @classe.setter
+    def classe(self, value):
+        self._classe = value
+
+    @property
+    def race(self):
+        return self._race
+
+    @race.setter
+    def race(self, value):
+        self._race = value
+
+    @property
+    def degat(self):
+        return self._degat
+
+    @degat.setter
+    def degat(self, value):
+        if value < 0:
+            raise ValueError("Les dégâts ne peuvent pas être négatifs.")
+        self._degat = value
 
     def appliquer_bonus_race(self):
         # stats = [FOR, DEX, CON, INT, SAG, CHA]
