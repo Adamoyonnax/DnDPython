@@ -40,3 +40,10 @@ class Inventaire() :
                 print(f"Nom : {item[0].nom} (ID : {item[0].idO} ) - Quantité : {item[1]}")
                 objets_type.append(item)
         return objets_type
+
+    def arme_equipee(self):
+        for obj, quantite in self.inventaire:
+            if isinstance(obj, Arme) and obj.equiper:
+                return obj
+        return None
+      

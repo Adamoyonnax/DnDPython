@@ -4,6 +4,11 @@ from Classes.Enum.MonstreEnum import Taille, Alignement, Type, Puissance
 from Classes.Enum.MonstreEnum import XP_PUISSANCE
 from Classes.Enum.JoueurEnum import Classe, Race
 
+from Classes.HeritageObjets.Arme import Arme
+from Classes.HeritageObjets.Armure import Armure, TypeArmure
+from Classes.HeritageObjets.Consommable import Consommable
+from Classes.Inventaire import Inventaire
+
 from random import randint
 
 class Combat:
@@ -156,11 +161,15 @@ class Combat:
             print(f"{self.joueur.nom} attaque {cible.nom}{str(cible_id)} !")
             res = randint(1, 20) + self.joueur.modificateurs[0]
             print(f"Résultat de l'attaque: {res}")
-
+            
             # Vérification de la réussite de l'attaque
             if res >= cible.classe_armure:
                 print(f"Attaque réussie contre {cible.nom} !")
-                degats = randint(1, self.joueur.degat) + self.joueur.modificateurs[0]
+                arme = self.joueur.inventaire.arme_equipee()  
+                if arme:
+                    degats = randint(1, arme.degat) + self.joueur.modificateurs[0]
+                else:
+                    degats = randint(1, 1) + self.joueur.modificateurs[0]  # attaque à mains nues
                 cible.pv -= degats
                 print(f"Dégâts infligés: {degats}. PV restants de {cible.nom}: {cible.pv}")
                 print("----------------------------------\n")
@@ -216,4 +225,3 @@ class Combat:
         self.joueur.experience += total_xp
         print(f"{self.joueur.nom} gagne {total_xp} points d'expérience ! Total XP: {self.joueur.experience}")
         self.joueur.level_up()
-    
