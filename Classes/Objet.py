@@ -54,5 +54,3 @@ class Objet:
     @propriete.setter
     def propriete(self, value):
         self._propriete = value
-
-

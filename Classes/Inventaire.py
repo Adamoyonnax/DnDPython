@@ -32,4 +32,11 @@ class Inventaire() :
                     return
                 else :
                     item[1] -= quantite
-            
+
+    def objet_par_type(self, type_objet):
+        objets_type = []
+        for item in self.inventaire:
+            if item[0].type == type_objet:
+                print(f"Nom : {item[0].nom} (ID : {item[0].idO} ) - Quantité : {item[1]}")
+                objets_type.append(item)
+        return objets_type

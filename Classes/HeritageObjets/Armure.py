@@ -1,5 +1,6 @@
 from Classes.Objet import Objet  
 from enum import Enum
+from Classes.Entite import Entite
 
 
 class TypeArmure(Enum):
@@ -9,11 +10,12 @@ class TypeArmure(Enum):
 
 class Armure(Objet):
 
-    def __init__(self, nom, typearmure, prix, rarete, protection, force_min, propriete=None):
+    def __init__(self, nom, typearmure, prix, rarete, protection, force_min, propriete=None, equiper=False):
         super().__init__(nom=nom, prix=prix, type="Armure", rarete=rarete, propriete=propriete)
         self.protection = protection
         self.force_min = force_min
         self.typearmure= typearmure
+        self.equiper = equiper
     
     @property
     def idArmure(self):
@@ -51,10 +53,31 @@ class Armure(Objet):
     def typearmure(self, value):
         self._typearmure = value
 
+    @property
+    def equiper(self):
+        return self._equiper
+    
+    @equiper.setter
+    def equiper(self, valeur: bool):
+        """Setter pour équiper ou déséquiper l’armure"""
+        self._equiper = valeur
+           
+    def equiper_armure(self, joueur):
+        if not self._equiper:
+            if joueur.stats[0] >= self.force_min:
+                self._equiper = True
+                print(f"✅ {self.nom} équipé.")
+            else:
+                print("⚠️ Force insuffisante pour équiper cette armure.")
+        else:
+            self._equiper = False
+            print(f"✅{self.nom} déséquipé.")
+
     def afficher_armure(self):
         print(f"Nom : {self.nom}")
         print(f"Type d'armure : {self.typearmure.value}")
         print(f"Force minimale requise : {self.force_min}")
+        print(f"Equipée : {'Oui' if self.equiper else 'Non'}")
         print(f"Bonus CA : {self.protection}")
         print(f"Prix : {self.prix} pièces")
         print(f"Rareté : {self.rarete}")

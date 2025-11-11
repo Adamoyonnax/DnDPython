@@ -16,7 +16,8 @@
         "propriete": "Lourde, bruit m\u00e9tallique",
         "protection": 15,
         "typearmure": "INTERMEDIAIRE",
-        "force_min": 13
+        "force_min": 13,
+        "equiper": false
     },
     {
         "idO": 3,
@@ -25,6 +26,8 @@
         "type": "Arme",
         "rarete": "Commune",
         "propriete": "Polyvalente (1d8)",
-        "degat": 6
+        "degat": 6,
+        "equiper": false
+
     }
 ]

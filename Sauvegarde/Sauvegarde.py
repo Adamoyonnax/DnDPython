@@ -17,14 +17,14 @@ from Classes.Inventaire import Inventaire
 def sauvegarder_joueur(joueur, fichier="Sauvegarde/joueur.json"):
     """Sauvegarde le joueur dans un fichier JSON, y compris son inventaire."""
     inventaire_data = []   
-    for obj, quantite in joueur.inventaire:  # obj est Armure, Arme ou Consommable
+    for obj, quantite in joueur.inventaire.inventaire:  # obj est Armure, Arme ou Consommable
         obj_data = {
             "idO": obj.idO,
             "nom": obj.nom,
             "prix": obj.prix,
             "type": obj.type,
             "rarete": obj.rarete,
-            "propriete": obj.propriete
+            "propriete": obj.propriete,
         }
 
         match obj.type:
@@ -32,11 +32,13 @@ def sauvegarder_joueur(joueur, fichier="Sauvegarde/joueur.json"):
                 obj_data.update({
                     "protection": obj.protection,
                     "typearmure": obj.typearmure.name if obj.typearmure else None,
-                    "force_min": obj.force_min
+                    "force_min": obj.force_min,
+                    "equiper": obj.equiper
                 })
             case "Arme":
                 obj_data.update({
-                    "degat": obj.degat
+                    "degat": obj.degat,
+                    "equiper": obj.equiper
                 })
             case "Consommable":
                 pass  # aucun attribut supplémentaire
@@ -91,6 +93,7 @@ def charger_joueur(fichier="Sauvegarde/joueur.json"):
                 force_min=objet_data["force_min"],
                 propriete=objet_data["propriete"]
             )
+            objet.equiper =objet_data["equiper"]
 
         elif type_objet == "Arme":
             objet = Arme(
@@ -100,6 +103,7 @@ def charger_joueur(fichier="Sauvegarde/joueur.json"):
                 degat=objet_data["degat"],
                 propriete=objet_data["propriete"]
             )
+            objet.equiper =objet_data["equiper"]
 
         elif type_objet == "Consommable":
             objet = Consommable(
@@ -196,11 +200,13 @@ def sauvegarder_objets(objets, fichier="Sauvegarde/objets.json") :
                 objet_data.update({
                     "protection": objet.protection,
                     "typearmure": objet.typearmure.name,
+                    "equiper": objet.equiper,
                     "force_min": objet.force_min,
                 })  
             case "Arme" :
                 objet_data.update({
                     "degat": objet.degat,
+                    "equiper": objet.equiper,
                 })
             case _ :
                 pass
@@ -227,6 +233,7 @@ def charger_objets(fichier="Sauvegarde/objets.json"):
                 protection=item["protection"],
                 force_min=item["force_min"],
                 propriete=item["propriete"],
+                equiper=item["equiper"]
             )
 
         elif type_objet == "Arme":
@@ -236,6 +243,7 @@ def charger_objets(fichier="Sauvegarde/objets.json"):
                 rarete=item["rarete"],
                 degat=item["degat"],
                 propriete=item["propriete"],
+                equiper=item["equiper"]
             )
 
         elif type_objet == "Consommable":
@@ -269,8 +277,10 @@ def charger_objet(objet_nom, fichier="Sauvegarde/objets.json") :
                     protection=item["protection"],
                     force_min=item["force_min"],
                     propriete=item["propriete"],
+                    equiper=item["equiper"]
                 )
                 objet.idO = item["idO"]
+                
             elif item["type"] == "Arme":
                 objet = Arme(
                     nom=item["nom"],
@@ -278,9 +288,9 @@ def charger_objet(objet_nom, fichier="Sauvegarde/objets.json") :
                     rarete=item["rarete"],
                     degat=item["degat"],
                     propriete=item["propriete"],
+                    equiper=item["equiper"]
                 )
                 objet.idO = item["idO"]
-
             else :
                 objet = Consommable(
                     nom=item["nom"],

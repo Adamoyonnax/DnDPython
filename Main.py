@@ -107,12 +107,15 @@ def creation_joueur():
         joueur.inventaire = inventaire
 
         print(f"\n✅ Création terminée !")
+        sauvegarder_joueur(joueur)
 
+        '''
         # 🔹 Sauvegarde avec gestion d'erreur
-        try:
+        # try:
             sauvegarder_joueur(joueur)
         except Exception as e:
             print(f"⚠️ Erreur lors de la sauvegarde : {e}")
+        '''
 
         return joueur
 
@@ -157,6 +160,36 @@ def menu_principal(joueur):
             case _:
                 print("❌ Choix invalide. Réessayez.")
 
+def detail_objet(joueur, objet_id) :
+    for objet, quantite in joueur.inventaire.inventaire :
+        if objet.idO == objet_id :
+            type = objet.type 
+            match type :
+                case "Arme" :
+                    objet.afficher_arme()
+                    while True:
+                        choix = input("Souhaitez-vous équiper cette arme ? (O/N)")
+                        if choix.lower() == 'o':
+                            objet.equiper_arme()
+                            break
+                        elif choix.lower() == 'n':
+                            break
+                        else:
+                            print("❌ Réponse invalide. Entrez 'O' ou 'N'.")
+                case "Armure" :
+                    objet.afficher_armure()
+                    while True:
+                        choix = input("Souhaitez-vous équiper cette armure ? (O/N)")
+                        if choix.lower() == 'o':
+                            objet.equiper_armure(joueur)
+                            break
+                        elif choix.lower() == 'n':
+                            break
+                        else:
+                            print("❌ Réponse invalide. Entrez 'O' ou 'N'.")
+                case "Consommable" :
+                    objet.afficher_consommable()
+    
 def interface_inventaire(joueur) :
     while True:
                 print("\n=== 🏰 INVENTAIRE ===")
@@ -175,19 +208,10 @@ def interface_inventaire(joueur) :
 
                     case "2":
                         objet_id = int(input("\n👉 Donner l'ID de l'item dont vous voulez connaître les détails"))
-                        for objet in joueur.inventaire.inventaire :
-                            if objet[0].idO == objet_id :
-                                type = objet[0].type 
-                                match type :
-                                    case "Arme" :
-                                        objet[0].afficher_arme()
-                                    case "Armure" :
-                                        objet[0].afficher_armure()
-                                    case "Consommable" :
-                                        objet[0].afficher_consommable()
+                        detail_objet(joueur, objet_id)
 
                     case "3":
-                        menu_principal(joueur)
+                        break
 
 def main():
     joueur = creation_joueur()
