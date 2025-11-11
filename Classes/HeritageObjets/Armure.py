@@ -1,8 +1,7 @@
 from Classes.Objet import Objet  
 from enum import Enum
-from Classes.Entite import Entite
 
-
+# Enum pour définir les types d'armures
 class TypeArmure(Enum):
     LEGERE = "Armure légère"
     INTERMEDIAIRE = "Armure intermédiaire"
@@ -10,13 +9,20 @@ class TypeArmure(Enum):
 
 class Armure(Objet):
 
+    # Classe représentant une armure héritant d'Objet.
     def __init__(self, nom, typearmure, prix, rarete, protection, force_min, propriete=None, equiper=False):
         super().__init__(nom=nom, prix=prix, type="Armure", rarete=rarete, propriete=propriete)
-        self.protection = protection
-        self.force_min = force_min
-        self.typearmure= typearmure
-        self.equiper = equiper
-    
+        self.protection = protection # Bonus de CA
+        self.force_min = force_min # Force minimale pour porter l'armure
+        self.typearmure= typearmure # Type d'armure (Enum)
+        self.equiper = equiper # Booléen indiquant si l'arme est équipée
+
+
+
+    # --- Getters / Setters --- 
+
+
+
     @property
     def idArmure(self):
         return self._idArmure
@@ -61,10 +67,18 @@ class Armure(Objet):
     def equiper(self, valeur: bool):
         """Setter pour équiper ou déséquiper l’armure"""
         self._equiper = valeur
-           
+
+
+
+    # --- Getters / Setters ---
+
+
+
+    # Permet à un joueur d'équiper ou déséquiper l'armure.
+    # Vérifie la force minimale avant d'équiper.   
     def equiper_armure(self, joueur):
         if not self._equiper:
-            if joueur.stats[0] >= self.force_min:
+            if joueur.stats[0] >= self.force_min:   # stats[0] = Force
                 self._equiper = True
                 print(f"✅ {self.nom} équipé.")
             else:

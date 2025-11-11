@@ -2,14 +2,18 @@ from random import randint
 
 class Entite:
 
+    # Constructor de la classe Entite.
     def __init__(self, nom, classe_armure, pv, stats):
         self.nom = nom
         self.classe_armure = classe_armure
         self.pv = pv
-        self.stats = stats
-        self.modificateurs = [self.calcul_mod(stat) for stat in stats]
+        self.stats = stats # Liste de 6 statistiques [FOR, DEX, CON, INT, SAG, CHA]
+        self.modificateurs = [self.calcul_mod(stat) for stat in stats] # Modificateurs correspondants
 
-        # --- Getters / Setters ---
+    # --- Getters / Setters ---
+
+
+
     @property
     def nom(self):
         return self._nom
@@ -51,8 +55,16 @@ class Entite:
     def modificateurs(self, new_stats):
         self._modificateurs = new_stats
 
+
+
+    # --- Getters / Setters ---
+
+
+
+    # Calcule le modificateur d'une statistique selon la règle D&D : (stat - 10) // 2
     def calcul_mod(self, stat):
         return (stat - 10) // 2
+
 
     def afficher_stats(self):
         stats_names = ["FOR", "DEX", "CON", "INT", "SAG", "CHA"]

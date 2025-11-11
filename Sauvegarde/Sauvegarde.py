@@ -14,10 +14,19 @@ from Classes.HeritageObjets.Armure import Armure, TypeArmure
 from Classes.HeritageObjets.Consommable import Consommable
 from Classes.Inventaire import Inventaire
 
+
+
+# ========================== SAUVEGARDE DU JOUEUR ========================== #
+
+
+
+# Sauvegarde le joueur dans un fichier JSON, y compris son inventaire.
 def sauvegarder_joueur(joueur, fichier="Sauvegarde/joueur.json"):
-    """Sauvegarde le joueur dans un fichier JSON, y compris son inventaire."""
     inventaire_data = []   
-    for obj, quantite in joueur.inventaire.inventaire:  # obj est Armure, Arme ou Consommable
+
+    # On parcourt les objets de l’inventaire du joueur
+    for obj, quantite in joueur.inventaire.inventaire:  
+        # Données communes à tous les objets
         obj_data = {
             "idO": obj.idO,
             "nom": obj.nom,
@@ -27,6 +36,7 @@ def sauvegarder_joueur(joueur, fichier="Sauvegarde/joueur.json"):
             "propriete": obj.propriete,
         }
 
+        # Données spécifiques selon le type d’objet
         match obj.type:
             case "Armure":
                 obj_data.update({
@@ -42,10 +52,11 @@ def sauvegarder_joueur(joueur, fichier="Sauvegarde/joueur.json"):
                 })
             case "Consommable":
                 pass  # aucun attribut supplémentaire
-
+        
+        # Ajout de l’objet et de sa quantité à la liste d’inventaire sérialisée
         inventaire_data.append({"objet": obj_data, "quantite": quantite})
 
-    """Sauvegarde le joueur dans un fichier JSON."""
+    # Données principales du joueur
     data = {
         "idJ": joueur.idJ,
         "nom": joueur.nom,
@@ -62,8 +73,15 @@ def sauvegarder_joueur(joueur, fichier="Sauvegarde/joueur.json"):
         json.dump(data, f, indent=4)
     print("💾 Joueur sauvegardé avec succès !")
 
+
+
+# ========================== CHARGEMENT DU JOUEUR ========================== #
+
+
+
+# Charge un joueur sauvegardé depuis un fichier JSON, y compris son inventaire.
 def charger_joueur(fichier="Sauvegarde/joueur.json"):
-    """Charge un joueur existant depuis un fichier JSON, y compris son inventaire."""
+    # Charge un joueur existant depuis un fichier JSON, y compris son inventaire.
     if not os.path.exists(fichier):
         return None
 
@@ -76,6 +94,7 @@ def charger_joueur(fichier="Sauvegarde/joueur.json"):
         objet_data = item["objet"]
         quantite = item["quantite"]
 
+        # Reconstruction selon le type d'objet
         type_objet = objet_data["type"]
         if type_objet == "Armure":
             typearmure = None
@@ -116,6 +135,7 @@ def charger_joueur(fichier="Sauvegarde/joueur.json"):
             print(f"⚠️ Type d'objet inconnu dans l'inventaire : {type_objet}")
             continue
 
+        # Création de l’objet Inventaire à partir des instances reconstituées
         inventaire_instances.append([objet, quantite])
         inventaire = Inventaire(inventaire_instances)
 
@@ -128,6 +148,8 @@ def charger_joueur(fichier="Sauvegarde/joueur.json"):
         pv=data["pv"],
         stats=data["stats"],
     )
+
+    # Application des attributs restants
     joueur.inventaire=inventaire
     joueur.idJ = data["idJ"]
     joueur.niveau = data["niveau"]
@@ -136,8 +158,14 @@ def charger_joueur(fichier="Sauvegarde/joueur.json"):
     print(f"✅ Joueur {joueur.nom} chargé depuis la sauvegarde !")
     return joueur
 
+
+
+# ========================== SAUVEGARDE / CHARGEMENT DES MONSTRES ========================== #
+
+
+
+# Sauvegarde une liste de monstres dans un fichier JSON.
 def sauvegarder_monstres(monstres, fichier="Sauvegarde/monstres.json"):
-    """Sauvegarde la liste des monstres dans un fichier JSON."""
     data = []
     for monstre in monstres:
         monstre_data = {
@@ -155,10 +183,10 @@ def sauvegarder_monstres(monstres, fichier="Sauvegarde/monstres.json"):
     with open(fichier, "w") as f:
         json.dump(data, f, indent=4)
     print("💾 Monstres sauvegardés avec succès !")
-    
+
+# Charge la liste des monstres depuis un fichier JSON et recrée leurs instances.    
 def charger_monstres(fichier="Sauvegarde/monstres.json"):
 
-    """Charge la liste des monstres depuis un fichier JSON."""
     if not os.path.exists(fichier):
         return []
     with open(fichier, "r") as f:
@@ -166,10 +194,11 @@ def charger_monstres(fichier="Sauvegarde/monstres.json"):
 
     monstres = []
     for monstre_data in data:
+        # Reconstitution du monstre avec conversion des champs Enum
         monstre = Monstre(
             nom=monstre_data["nom"],
             taille=Taille[monstre_data["taille"]],
-            puissance=Puissance[monstre_data["puissance"]],  # On reconvertit en Enum
+            puissance=Puissance[monstre_data["puissance"]],  
             alignement=Alignement[monstre_data["alignement"]],
             type=Type[monstre_data["type"]],
             classe_armure=monstre_data["classe_armure"],
@@ -181,10 +210,17 @@ def charger_monstres(fichier="Sauvegarde/monstres.json"):
     print("✅ Monstres chargés depuis la sauvegarde !")
     return monstres
 
+
+
+# ========================== SAUVEGARDE / CHARGEMENT DES OBJETS ========================== #
+
+
+
+# Sauvegarde une liste d’objets (armes, armures, consommables) dans un fichier JSON.
 def sauvegarder_objets(objets, fichier="Sauvegarde/objets.json") :
-    """Sauvegarde la liste des objets dans un fichier JSON."""
     data = []
     for objet in objets:
+        # Données communes
         objet_data = {
             "idO": objet.idO,
             "nom": objet.nom,
@@ -194,6 +230,7 @@ def sauvegarder_objets(objets, fichier="Sauvegarde/objets.json") :
             "propriete": objet.propriete
         }
 
+        # Données spécifiques selon le type
         type = objet.type 
         match type :
             case "Armure" :
@@ -210,13 +247,16 @@ def sauvegarder_objets(objets, fichier="Sauvegarde/objets.json") :
                 })
             case _ :
                 pass
+
         data.append(objet_data)
+
     with open(fichier, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4)
     print("💾 Objets sauvegardés avec succès !")
 
+# Charge tous les objets depuis le fichier JSON et recrée leurs instances correspondantes.
 def charger_objets(fichier="Sauvegarde/objets.json"):
-    """Charge les objets sauvegardés depuis un fichier JSON et recrée les instances."""
+
     objets = []
     with open(fichier, "r", encoding="utf-8") as f:
         data = json.load(f)
@@ -263,10 +303,12 @@ def charger_objets(fichier="Sauvegarde/objets.json"):
     print(f"📦 {len(objets)} objets chargés avec succès !")
     return objets
 
+# Charge un objet spécifique depuis son nom.
 def charger_objet(objet_nom, fichier="Sauvegarde/objets.json") :
     with open(fichier, "r", encoding="utf-8") as f:
         data = json.load(f)
     for item in data :
+        # Reconstruction selon le type d’objet
         if item["nom"] == objet_nom :
             if item["type"] == "Armure":
                 objet = Armure(
@@ -301,5 +343,6 @@ def charger_objet(objet_nom, fichier="Sauvegarde/objets.json") :
                 objet.idO = item["idO"]
             return objet
     else:
+        # Si aucun objet ne correspond
         print(f"⚠️ Objet inconnu")
         return None

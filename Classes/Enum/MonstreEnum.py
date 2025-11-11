@@ -1,5 +1,6 @@
 from enum import Enum
 
+# Enum pour les alignements
 class Alignement(Enum):
     LB = "Loyal Bon"
     NB = "Neutre Bon"
@@ -11,6 +12,7 @@ class Alignement(Enum):
     NM = "Neutre Mauvais"
     CM = "Chaotique Mauvais"
 
+# Enum pour les tailles de monstres
 class Taille(Enum):
     TP="Très Petit"
     P="Petit"
@@ -18,6 +20,7 @@ class Taille(Enum):
     G="Grand"
     TG="Très Grand"
 
+# Enum pour les types de monstres
 class Type(Enum):
     HUMANOIDE = "Humanoïde"
     ABERRATION = "Aberration"
@@ -34,7 +37,7 @@ class Type(Enum):
     PLANTE = "Plante"
     VASE = "Vase"
 
-
+# Enum pour la puissance des monstres
 class Puissance(Enum):
     ZERO = "0"
     UH = "1/8"
@@ -66,6 +69,7 @@ class Puissance(Enum):
     VINGT_QUATRE = "24"
     TRENTE = "30"
 
+# Dictionnaire définissant l'expérience nécessaire pour chaque niveau de puissance
 XP_PUISSANCE = {
     Puissance.ZERO: 10,
     Puissance.UH: 25,

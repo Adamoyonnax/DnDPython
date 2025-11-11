@@ -7,6 +7,7 @@ from Classes.Enum.JoueurEnum import Classe, Race
 
 
 class Inventaire() :
+    # Classe représentant l'inventaire d'un joueur.
     def __init__(self, inventaire):
         self.inventaire = inventaire  # Contient [[Objet, int], [Objet, int]]
 
@@ -17,6 +18,8 @@ class Inventaire() :
             print(f"Quantité : {objet[1]}")
             print("----------------------")
     
+
+    # Ajoute un objet à l'inventaire. Si l'objet existe déjà, on augmente simplement la quantité.
     def ajouter_objet(self, objet, quantite):
         for item in self.inventaire:
             if item[0] == objet:
@@ -24,6 +27,7 @@ class Inventaire() :
                 return
         self.inventaire.append([objet, quantite])
     
+    # Retire une certaine quantité d'un objet de l'inventaire. Supprime complètement l’entrée si la quantité tombe à 0.
     def retirer_objet(self, id, quantite) :
         for item in self.inventaire :
             if item[0].idO == id:
@@ -33,6 +37,7 @@ class Inventaire() :
                 else :
                     item[1] -= quantite
 
+    # Affiche et retourne tous les objets d’un certain type (Arme, Armure, Consommable).
     def objet_par_type(self, type_objet):
         objets_type = []
         for item in self.inventaire:
@@ -41,6 +46,7 @@ class Inventaire() :
                 objets_type.append(item)
         return objets_type
 
+    # Retourne l'arme équipée dans l'inventaire, s'il y en a une.
     def arme_equipee(self):
         for obj, quantite in self.inventaire:
             if isinstance(obj, Arme) and obj.equiper:

@@ -6,6 +6,7 @@ from Classes.HeritageObjets.Consommable import Consommable
 
 from ..Entite import Entite
 
+# Dictionnaire définissant l'expérience nécessaire pour chaque niveau
 XP_PALIERS = {
     1: 0,
     2: 300,
@@ -29,9 +30,11 @@ XP_PALIERS = {
     20: 355000
 }
 
+
 class Joueur(Entite):
     compteur_idJ = 0
 
+    # Classe représentant un joueur héritant d'Entite.
     def __init__(self, nom, classe_armure, classe, race, pv, stats):
         super().__init__(nom, classe_armure, pv, stats)
         Joueur.compteur_idJ += 1
@@ -44,6 +47,9 @@ class Joueur(Entite):
         self.inventaire = None
 
     # --- Getters / Setters ---
+
+
+
     @property
     def idJ(self):
         return self._idJ
@@ -108,6 +114,12 @@ class Joueur(Entite):
     def inventaire(self, value):
         self._inventaire = value   
 
+    # --- Getters / Setters ---
+
+
+
+
+    # Applique les bonus raciaux aux statistiques du joueur
     def appliquer_bonus_race(self):
         # stats = [FOR, DEX, CON, INT, SAG, CHA]
         if self.race == Race.ELF:
@@ -117,13 +129,14 @@ class Joueur(Entite):
             self.stats[2] += 2  # +2 CON
             self.stats[0] += 1  # +1 FOR
         elif self.race == Race.HUMAIN:
-            self.stats = [stat + 1 for stat in self.stats]
+            self.stats = [stat + 1 for stat in self.stats] # +1 à toutes les stats
         # Ajouter d'autres races selon ton Enum Race
 
-        # Optionnel : recalculer PV et classe d'armure après les bonus
+        # Recalculer PV et classe d'armure après les bonus
         self.classe_armure = 10 + (self.stats[1] - 10) // 2
         self.pv = self.stats[2] * 2
 
+    # Applique les bonus de classe aux statistiques du joueur
     def appliquer_bonus_classe(self):
         # stats = [FOR, DEX, CON, INT, SAG, CHA]
         if self.classe == Classe.GUERRIER:
@@ -137,7 +150,7 @@ class Joueur(Entite):
             self.stats[4] += 1  # +1 SAG
         # Ajouter d'autres classes selon ton Enum Classe
 
-        # Optionnel : recalculer PV et classe d'armure après les bonus
+        # Recalculer PV et classe d'armure après les bonus
         self.classe_armure = 10 + (self.stats[1] - 10) // 2
         self.pv = self.stats[2] * 2
 
@@ -151,11 +164,11 @@ class Joueur(Entite):
         print(f"Classe d'Armure: {self.classe_armure}")
         self.afficher_stats()
 
+    # Vérifie si le joueur a atteint un nouveau palier d'expérience et augmente le niveau si nécessaire.
     def level_up(self):
         for niveau, palier in sorted(XP_PALIERS.items()) :
             if self.experience < palier:
-                return
-                        
+                return           
             if niveau > self.niveau:
                 print(f"✨ Level up ! Vous êtes passé niveau {niveau} !")
                 self.niveau = niveau

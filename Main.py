@@ -5,13 +5,17 @@ from Classes.Enum.JoueurEnum import Classe, Race
 
 from Classes.Combat import Combat
 
-from Sauvegarde.Sauvegarde import sauvegarder_joueur, charger_joueur, charger_monstres, charger_objet, charger_objets
+from Sauvegarde.Sauvegarde import sauvegarder_joueur, charger_joueur, charger_monstres, charger_objet
 
 from Classes.HeritageObjets.Arme import Arme
 from Classes.HeritageObjets.Armure import Armure
 from Classes.HeritageObjets.Consommable import Consommable
 
 from Classes.Inventaire import Inventaire
+
+# ====================== MÉTADONNÉES DU PROJET ====================== #
+
+
 
 def signature() :
     print("─────────────────────────────────────────────")
@@ -21,10 +25,20 @@ def signature() :
     print("Discord : ademo")
     print("─────────────────────────────────────────────")
 
+
+
+# ====================== CRÉATION / CHARGEMENT DU JOUEUR ====================== #
+
+
+
+"""
+    Crée un nouveau joueur ou charge une sauvegarde existante.
+    - Si une sauvegarde est trouvée, demande à l'utilisateur s'il veut la charger.
+    - Sinon, procède à la création d'un nouveau joueur avec saisie interactive.
+"""
 def creation_joueur():
-    """Crée un nouveau joueur ou charge une sauvegarde existante, avec gestion d'erreurs."""
     try:
-        # 🔹 Chargement d'une éventuelle sauvegarde
+        # Chargement d'une éventuelle sauvegarde
         joueur_existant = charger_joueur()
         if joueur_existant:
             while True:
@@ -41,14 +55,14 @@ def creation_joueur():
         print("=== Bienvenue dans le jeu de DnD Python ===")
         print("\n=== Création d'un Joueur ===")
 
-        # 🔹 Nom du joueur
+        # Nom du joueur
         while True:
             nom = input("Entrez le nom du joueur: ").strip()
             if nom:
                 break
             print("❌ Le nom ne peut pas être vide.")
 
-        # 🔹 Choix de la classe
+        # Choix de la classe
         print("\nChoisissez une classe:")
         for c in Classe:
             print(f"- {c.name} ({c.value})")
@@ -60,7 +74,7 @@ def creation_joueur():
                 break
             print("❌ Classe invalide. Essayez encore.")
 
-        # 🔹 Choix de la race
+        # Choix de la race
         print("\nChoisissez une race:")
         for r in Race:
             print(f"- {r.name} ({r.value})")
@@ -72,7 +86,7 @@ def creation_joueur():
                 break
             print("❌ Race invalide. Essayez encore.")
 
-        # 🔹 Répartition des statistiques
+        # Répartition des statistiques
         print("\nRépartition des statistiques (FOR, DEX, CON, INT, SAG, CHA)")
         stats_noms = ["FOR", "DEX", "CON", "INT", "SAG", "CHA"]
         stats = [0] * 6
@@ -91,14 +105,18 @@ def creation_joueur():
                 except ValueError:
                     print("⚠️ Veuillez entrer un nombre entier.")
         
-        # 🔹 Calcul des valeurs dérivées
+        # Calcul des valeurs CA et PV
         classe_armure = 10 + (stats[1] - 10) // 2  # mod DEX
         pv = stats[2] * 2  # PV de départ basé sur CON
 
-        # 🔹 Création du joueur
+        # Création du joueur
         joueur = Joueur(nom, classe_armure, classe, race, pv, stats)
+
+        # Application des bonus raciaux et de classe
         joueur.appliquer_bonus_race()
         joueur.appliquer_bonus_classe()
+
+        # Création d’un inventaire de départ (3 objets de base)        
         objet_depart=[]
         objet_depart.append([charger_objet("Bâton"), 1])
         objet_depart.append([charger_objet("Potion de Soin Mineure"), 3])
@@ -122,7 +140,13 @@ def creation_joueur():
     except KeyboardInterrupt:
         print("\n🚫 Création annulée par l'utilisateur.")
         return None
-    
+
+
+
+# ========================== MENU PRINCIPAL ========================== #
+
+
+
 def menu_principal(joueur):
     while True:
         print("\n=== 🏰 MENU PRINCIPAL ===")
@@ -137,22 +161,27 @@ def menu_principal(joueur):
         match choix:
 
             case "1":
+                # Affiche les infos du joueur
                 joueur.afficher_joueur()
 
             case "2":
+                # Affiche l'inventaire
                 print(f"Inventaire de {joueur.nom}")
                 joueur.inventaire.afficher_inventaire()
                 interface_inventaire(joueur)
 
             case "3":
+                # Lance un combat contre des monstres chargés depuis la sauvegarde
                 monstres = charger_monstres()
                 combat1 = Combat(joueur, monstres)
                 combat1.combat_tour()
 
             case "4":
+                # Sauvegarde le joueur
                 sauvegarder_joueur(joueur)
 
             case "5":
+                # Quitte le jeu après sauvegarde
                 sauvegarder_joueur(joueur)
                 print("👋 À bientôt, aventurier !")
                 break
@@ -160,36 +189,14 @@ def menu_principal(joueur):
             case _:
                 print("❌ Choix invalide. Réessayez.")
 
-def detail_objet(joueur, objet_id) :
-    for objet, quantite in joueur.inventaire.inventaire :
-        if objet.idO == objet_id :
-            type = objet.type 
-            match type :
-                case "Arme" :
-                    objet.afficher_arme()
-                    while True:
-                        choix = input("Souhaitez-vous équiper cette arme ? (O/N)")
-                        if choix.lower() == 'o':
-                            objet.equiper_arme()
-                            break
-                        elif choix.lower() == 'n':
-                            break
-                        else:
-                            print("❌ Réponse invalide. Entrez 'O' ou 'N'.")
-                case "Armure" :
-                    objet.afficher_armure()
-                    while True:
-                        choix = input("Souhaitez-vous équiper cette armure ? (O/N)")
-                        if choix.lower() == 'o':
-                            objet.equiper_armure(joueur)
-                            break
-                        elif choix.lower() == 'n':
-                            break
-                        else:
-                            print("❌ Réponse invalide. Entrez 'O' ou 'N'.")
-                case "Consommable" :
-                    objet.afficher_consommable()
-    
+
+# ====================== INTERFACE D’INVENTAIRE ====================== #
+
+
+'''
+    Interface pour gérer l'inventaire du joueur.
+    Permet de jeter des objets ou d'afficher les détails d'un objet spécifique.
+'''
 def interface_inventaire(joueur) :
     while True:
                 print("\n=== 🏰 INVENTAIRE ===")
@@ -201,21 +208,73 @@ def interface_inventaire(joueur) :
 
                 match choix:
                     case "1":
+                        # Jeter un objet
                         id = int(input("\n👉 Donner l'ID de l'item que vous souhaitez jeter"))
                         quantite = int(input("👉 Combien ? "))
                         joueur.inventaire.retirer_objet(id, quantite)
                         print("✅ Objet(s) retiré(s) de l'inventaire.")
 
                     case "2":
+                        # Détail d'un objet
                         objet_id = int(input("\n👉 Donner l'ID de l'item dont vous voulez connaître les détails"))
                         detail_objet(joueur, objet_id)
 
                     case "3":
+                        # Retour au menu principal
                         break
 
+
+"""
+    Affiche les détails d’un objet à partir de son ID
+    et propose des actions selon le type (équiper, utiliser, etc.)
+"""
+def detail_objet(joueur, objet_id) :
+    # Recherche de l'objet dans l'inventaire
+    for objet, quantite in joueur.inventaire.inventaire :
+        if objet.idO == objet_id :
+            # Affichage des détails selon le type d'objet
+            type = objet.type 
+            match type :
+                case "Arme" :
+                    objet.afficher_arme()
+                    # Propose d'équiper l'arme
+                    while True:
+                        choix = input("Souhaitez-vous équiper cette arme ? (O/N)")
+                        if choix.lower() == 'o':
+                            objet.equiper_arme()
+                            break
+                        elif choix.lower() == 'n':
+                            break
+                        else:
+                            print("❌ Réponse invalide. Entrez 'O' ou 'N'.")
+                case "Armure" :
+                    objet.afficher_armure()
+                    # Propose d'équiper l'armure
+                    while True:
+                        choix = input("Souhaitez-vous équiper cette armure ? (O/N)")
+                        if choix.lower() == 'o':
+                            objet.equiper_armure(joueur)
+                            break
+                        elif choix.lower() == 'n':
+                            break
+                        else:
+                            print("❌ Réponse invalide. Entrez 'O' ou 'N'.")
+                case "Consommable" :
+                    objet.afficher_consommable()
+
+
+
+
+# ====================== POINT D’ENTRÉE DU PROGRAMME ====================== #
+
+
+
+# Fonction principale du programme (point d'entrée du jeu).
 def main():
     joueur = creation_joueur()
     signature()
     menu_principal(joueur)
 
+
+# Exécution directe du jeu
 main()

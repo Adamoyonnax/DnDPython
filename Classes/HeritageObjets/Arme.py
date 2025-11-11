@@ -2,11 +2,16 @@ from ..Objet import Objet
 
 class Arme(Objet) :
 
+    # Classe représentant une arme dans le jeu.
     def __init__(self, nom, prix, rarete, degat, propriete=None, equiper=False):
         super().__init__(nom=nom, prix=prix, type="Arme", rarete=rarete, propriete=propriete)
-        self.degat = degat
-        self.equiper = equiper
-    
+        self.degat = degat # Dégâts de l'arme (ex: 6 pour 1d6)
+        self.equiper = equiper # Booléen indiquant si l'arme est équipée
+
+    # --- Getters / Setters ---
+
+
+
     @property
     def idArme(self):
         return self._idArme
@@ -33,9 +38,16 @@ class Arme(Objet) :
     
     @equiper.setter
     def equiper(self, valeur: bool):
-        """Setter pour équiper ou déséquiper l’armure"""
         self._equiper = valeur
-    
+
+
+
+    # --- Getters / Setters ---
+
+
+
+    # Permute l'état d'équipement de l'arme.
+    # Si l'arme n'est pas équipée, elle s'équipe et vice versa.
     def equiper_arme(self):
         if not self._equiper:
             self._equiper = True

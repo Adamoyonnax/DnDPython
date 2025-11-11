@@ -1,18 +1,23 @@
 
 class Objet:
 
+    # Compteur de tous les objets créés, utilisé pour générer un ID unique
     compteur_idO = 0
 
+    # Constructeur de la classe Objet.
     def __init__(self, nom, prix, type, rarete, propriete=None):
         Objet.compteur_idO += 1
         self.idO = Objet.compteur_idO 
         self.nom = nom
-        self.prix = prix
-        self.type = type
-        self.rarete = rarete
-        self.propriete = propriete
+        self.prix = prix    
+        self.type = type    # Type ou catégorie de l'objet (ex: "Armure", "Arme","Consommable", etc.)
+        self.rarete = rarete    # Rareté de l'objet (ex: "Commun", "Rare", "Légendaire", etc.)
+        self.propriete = propriete  # Propriétés supplémentaires de l'objet (optionnel)
 
     # --- Getters / Setters ---
+
+
+
     @property
     def nom(self):
         return self._nom
@@ -54,3 +59,7 @@ class Objet:
     @propriete.setter
     def propriete(self, value):
         self._propriete = value
+    
+
+
+    # --- Getters / Setters ---
