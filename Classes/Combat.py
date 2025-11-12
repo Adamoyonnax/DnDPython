@@ -203,44 +203,57 @@ class Combat:
         if cible:
             # Attaque du joueur
             print(f"{self.joueur.nom} attaque {cible.nom}{str(cible_id)} !")
-            res = randint(1, 20) + self.joueur.modificateurs[0]
-            print(f"Résultat de l'attaque: {res}")
-            
+            res = randint(1, 20)
+            print(f"Résultat de l'attaque: {res+ self.joueur.modificateurs[0]}")
+
             # Vérification de la réussite de l'attaque
-            if res >= cible.classe_armure:
-                print(f"Attaque réussie contre {cible.nom} !")
+            match res :
+                case 20 :
+                    print("Coup critique !")
+                    arme = self.joueur.inventaire.arme_equipee()  
+                    if arme:
+                        degats = randint(1, arme.degat) + self.joueur.modificateurs[0]
+                    else:
+                        degats = randint(1, 1) + self.joueur.modificateurs[0]  # Attaque à mains nues
+                    cible.pv -= degats
+                    print(f"Dégâts infligés: {degats}. PV restants de {cible.nom}: {cible.pv}")
+                    print("----------------------------------\n")
+                case 1 :
+                    print("Échec critique ! L'attaque rate automatiquement.")
+                    return
+                case _ :
+                    if res+self.joueur.modificateurs[0] >= cible.classe_armure:
+                        print(f"Attaque réussie contre {cible.nom} !")
 
-                # Calcul des dégâts avec l'arme équipée
-                arme = self.joueur.inventaire.arme_equipee()  
-                if arme:
-                    degats = randint(1, arme.degat) + self.joueur.modificateurs[0]
-                else:
-                    degats = randint(1, 1) + self.joueur.modificateurs[0]  # Attaque à mains nues
-                cible.pv -= degats
-                print(f"Dégâts infligés: {degats}. PV restants de {cible.nom}: {cible.pv}")
-                print("----------------------------------\n")
+                        # Calcul des dégâts avec l'arme équipée
+                        arme = self.joueur.inventaire.arme_equipee()  
+                        if arme:
+                            degats = randint(1, arme.degat) + self.joueur.modificateurs[0]
+                        else:
+                            degats = randint(1, 1) + self.joueur.modificateurs[0]  # Attaque à mains nues
+                        cible.pv -= degats
+                        print(f"Dégâts infligés: {degats}. PV restants de {cible.nom}: {cible.pv}")
+                        print("----------------------------------\n")
+                    else:             
+                        print(f"Attaque ratée contre {cible.nom}.")
+                        print("----------------------------------\n")
+            # Vérification si le monstre est vaincu
+            if cible.pv <= 0:
+                print(f"{cible.nom} est vaincu !")
 
-                # Vérification si le monstre est vaincu
-                if cible.pv <= 0:
-                    print(f"{cible.nom} est vaincu !")
+                # Retirer de la liste d’initiative
+                self.tourGeneral = [
+                    participant for participant in self.tourGeneral
+                    if participant[0] != cible
+                ]
 
-                    # Retirer de la liste d’initiative
-                    self.tourGeneral = [
-                        participant for participant in self.tourGeneral
-                        if participant[0] != cible
-                    ]
+                # Retirer de la liste de monstres vivants
+                self.monstres = [
+                    monstre for monstre in self.monstres
+                    if monstre != cible
+                ]
 
-                    # Retirer de la liste de monstres vivants
-                    self.monstres = [
-                        monstre for monstre in self.monstres
-                        if monstre != cible
-                    ]
-
-                    self.morts.append(cible)
-
-            else:             
-                print(f"Attaque ratée contre {cible.nom}.")
-                print("----------------------------------\n")
+                self.morts.append(cible)
         else:
             print("Monstre cible non trouvé.")
 
@@ -252,26 +265,35 @@ class Combat:
         
         # Attaque du monstre
         print(f"{monstre.nom} attaque {self.joueur.nom} !")
-        res = randint(1, 20) + monstre.modificateurs[0]
-        print(f"Résultat de l'attaque: {res}")
+        res = randint(1, 20)
+        print(f"Résultat de l'attaque: {res+monstre.modificateurs[0]}")
 
         # Vérification de la réussite de l'attaque
-        if res >= self.joueur.classe_armure:
-            print(f"Attaque réussie contre {self.joueur.nom} !")
-            degats = randint(1, 8) + monstre.modificateurs[0]  # Supposons que le monstre utilise un dé à 8 faces
-            self.joueur.pv -= degats
-            print(f"Dégâts infligés: {degats}. PV restants de {self.joueur.nom}: {self.joueur.pv}")
-            print("----------------------------------\n")
-
-            # Vérification si le joueur est vaincu
-            if self.joueur.pv <= 0:
-                print(f"{self.joueur.nom} est vaincu !")
-                return 1
-            return 0
-        else:
-            print(f"Attaque ratée contre {self.joueur.nom}.")
-            print("----------------------------------\n")
-            return 0
+        match res :  
+            case 20 :
+                print("Coup critique !")
+                degats = (randint(1, 8) + monstre.modificateurs[0]) * 2  # Dégâts doublés pour un coup critique
+                self.joueur.pv -= degats
+                print(f"Dégâts infligés: {degats}. PV restants de {self.joueur.nom}: {self.joueur.pv}")
+                print("----------------------------------\n")
+            case 1 :
+                print("Échec critique ! L'attaque rate automatiquement.")
+                return 0
+            case _ :
+                if res + monstre.modificateurs[0] >= self.joueur.classe_armure:
+                    print(f"Attaque réussie contre {self.joueur.nom} !")
+                    degats = randint(1, 8) + monstre.modificateurs[0]  # Supposons que le monstre utilise un dé à 8 faces
+                    self.joueur.pv -= degats
+                    print(f"Dégâts infligés: {degats}. PV restants de {self.joueur.nom}: {self.joueur.pv}")
+                    print("----------------------------------\n")
+                else:
+                    print(f"Attaque ratée contre {self.joueur.nom}.")
+                    print("----------------------------------\n")
+                    return 0
+        if self.joueur.pv <= 0:
+            print(f"{self.joueur.nom} est vaincu !")
+            return 1
+        return 0 
 
     """
         Calcule et attribue l'expérience totale gagnée par le joueur
